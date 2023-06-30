@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		756C86982A4F6F9200E5D9F1 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756C86972A4F6F9200E5D9F1 /* TweetTableViewCell.swift */; };
 		758BE9372A4DF88A0054E527 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758BE9362A4DF88A0054E527 /* AppDelegate.swift */; };
 		758BE9392A4DF88A0054E527 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758BE9382A4DF88A0054E527 /* SceneDelegate.swift */; };
 		758BE93B2A4DF88A0054E527 /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758BE93A2A4DF88A0054E527 /* MainTabbarViewController.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		756C86972A4F6F9200E5D9F1 /* TweetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetTableViewCell.swift; sourceTree = "<group>"; };
 		758BE9332A4DF88A0054E527 /* TwitterClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		758BE9362A4DF88A0054E527 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		758BE9382A4DF88A0054E527 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +45,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		756C86962A4F6DF700E5D9F1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				756C86972A4F6F9200E5D9F1 /* TweetTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		758BE92A2A4DF88A0054E527 = {
 			isa = PBXGroup;
 			children = (
@@ -62,6 +72,7 @@
 		758BE9352A4DF88A0054E527 /* TwitterClone */ = {
 			isa = PBXGroup;
 			children = (
+				756C86962A4F6DF700E5D9F1 /* Views */,
 				758BE94A2A4E25CE0054E527 /* Controllers */,
 				758BE9362A4DF88A0054E527 /* AppDelegate.swift */,
 				758BE9382A4DF88A0054E527 /* SceneDelegate.swift */,
@@ -169,6 +180,7 @@
 				758BE9392A4DF88A0054E527 /* SceneDelegate.swift in Sources */,
 				758BE94D2A4E260B0054E527 /* HomeViewController.swift in Sources */,
 				758BE9532A4E26530054E527 /* DirectMessagesViewController.swift in Sources */,
+				756C86982A4F6F9200E5D9F1 /* TweetTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
