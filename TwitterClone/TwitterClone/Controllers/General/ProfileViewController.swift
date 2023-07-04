@@ -9,6 +9,16 @@ import UIKit
 
 class ProfileViewController: UIViewController {
   
+  private var isStatusBarHidden: Bool = true
+  
+  private let statusBar: UIView = {
+    let view = UIView()
+    view.backgroundColor = .systemBackground
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.layer.opacity = 0
+    return view
+  }()
+  
   private let profileTableView: UITableView = {
     
     let tableView = UITableView()
@@ -22,12 +32,15 @@ class ProfileViewController: UIViewController {
     view.backgroundColor = .systemBackground
     navigationItem.title = "Profile"
     view.addSubview(profileTableView)
-    
+    view.addSubview(statusBar)
     let headerView = ProfileTableViewHeader(frame: CGRect(x: 0, y: 0, width: profileTableView.frame.width, height: 380))
     
     profileTableView.delegate = self
     profileTableView.dataSource = self
     profileTableView.tableHeaderView = headerView
+    // it ignores the safe area and the imageView takes up the whole top area of the view.
+    profileTableView.contentInsetAdjustmentBehavior = .never
+    navigationController?.navigationBar.isHidden = true
     configureConstraints()
   }
   
@@ -40,7 +53,16 @@ class ProfileViewController: UIViewController {
       profileTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ]
     
+    let statusBarConstraints = [
+      statusBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      statusBar.topAnchor.constraint(equalTo: view.topAnchor),
+      statusBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      statusBar.heightAnchor.constraint(equalToConstant: view.bounds.height > 800 ? 40 : 20)
+    ]
+    
     NSLayoutConstraint.activate(profileTableViewConstrainsts)
+    NSLayoutConstraint.activate(statusBarConstraints)
+
   }
 }
 
@@ -55,5 +77,23 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     return cell
+  }
+  
+  // fix for scrollView - watch and other elements don't stay over the tableview. solid bg now(transp b4).
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let yPosition = scrollView.contentOffset.y
+    
+    if yPosition > 150 && isStatusBarHidden {
+      isStatusBarHidden = false
+      UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) { [weak self] in
+        self?.statusBar.layer.opacity = 1
+      } completion: { _ in }
+      
+    } else if yPosition < 0 && !isStatusBarHidden {
+      isStatusBarHidden = false
+      UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) { [weak self] in
+        self?.statusBar.layer.opacity = 0
+      } completion: { _ in }
+    }
   }
 }
