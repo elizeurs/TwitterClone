@@ -7,8 +7,12 @@
 
 import UIKit
 import PhotosUI
+import Combine
 
 class ProfileDataFormViewController: UIViewController {
+  
+  private var viewModel = ProfileDataFormViewViewModel()
+  private var subscriptions: Set<AnyCancellable> = []
   
   private let scrollView: UIScrollView = {
     let scrollView = UIScrollView()
@@ -109,7 +113,32 @@ class ProfileDataFormViewController: UIViewController {
     bioTextView.delegate = self
     view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapToDismiss)))
     configureConstraints()
+    submitButton.addTarget(self, action: #selector(didTapSubmit), for: .touchUpInside)
     avatarPlaceholderImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapToUpload)))
+    bindViews()
+  }
+  
+  @objc private func didTapSubmit() {
+    viewModel.uploadAvatar()
+  }
+  
+  @objc private func didUpdateDisplayName() {
+    viewModel.displayName = displayNameTextField.text
+    viewModel.validateUserProfileForm()
+  }
+  
+  @objc private func didUpdateUserName() {
+    viewModel.username = usernameTextField.text
+    viewModel.validateUserProfileForm()
+  }
+  
+  private func bindViews() {
+    displayNameTextField.addTarget(self, action: #selector(didUpdateDisplayName), for: .editingChanged)
+    usernameTextField.addTarget(self, action: #selector(didUpdateUserName), for: .editingChanged)
+    viewModel.$isFormValid.sink { [weak self] buttonState in
+      self?.submitButton.isEnabled = buttonState
+    }
+    .store(in: &subscriptions)
   }
   
   @objc private func didTapToUpload() {
@@ -203,6 +232,10 @@ extension ProfileDataFormViewController: UITextViewDelegate, UITextFieldDelegate
     }
   }
   
+  func textViewDidChange(_ textView: UITextView) {
+    viewModel.bio = textView.text
+  }
+  
   func textFieldDidBeginEditing(_ textField: UITextField) {
     scrollView.setContentOffset(CGPoint(x: 0, y: textField.frame.origin.y - 100), animated: true)
   }
@@ -222,6 +255,8 @@ extension ProfileDataFormViewController: PHPickerViewControllerDelegate {
         if let image = object as? UIImage {
           DispatchQueue.main.async {
             self?.avatarPlaceholderImageView.image = image
+            self?.viewModel.imageData = image
+            self?.viewModel.validateUserProfileForm()
           }
         }
       }
